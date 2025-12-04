@@ -1,0 +1,29 @@
+name: cd Automatique FTP
+
+on:
+  # Se déclenche quand on push sur main
+  push:
+    branches: [main]
+  
+  # Permet de déclencher MANUELLEMENT depuis GitHub
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Étape 1 : Récupérer le code
+      - name: 📥 Télécharger le code
+        uses: actions/checkout@v3
+      
+      # Étape 2 : Déployer via FTP
+      - name: 🚀 Déployer sur le serveur
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /www/votresite/
+          dry-run: false
