@@ -1,0 +1,36 @@
+name: CI Test Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Étape 1 : Récupérer le code
+      - name: Checkout du dépôt
+        uses: actions/checkout@v3
+      
+      # Étape 2 : Message de succès
+      - name: Afficher un message de test
+        run: echo "✅ CI Pipeline exécuté avec succès !"
+      
+      # Étape 3 : Lister les fichiers
+      - name: Vérifier les fichiers
+        run: |
+          echo "📁 Liste des fichiers :"
+          ls -la
+      
+      # Étape 4 : Vérifier que index.html existe
+      - name: Vérifier le fichier HTML
+        run: |
+          if [ -f "index.html" ]; then
+            echo "✅ index.html existe et est valide"
+          else
+            echo "❌ ERREUR : index.html manquant !"
+            exit 1
+          fi
