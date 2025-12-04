@@ -1,29 +1,24 @@
-name: Cd Automatique FTP
+name: Cd sur GitHub Pages
 
 on:
-  # Se déclenche quand on push sur main
   push:
     branches: [main]
-  
-  # Permet de déclencher MANUELLEMENT depuis GitHub
-  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
-      # Étape 1 : Récupérer le code
-      - name: 📥 Télécharger le code
-        uses: actions/checkout@v3
+      - name: 📥 Récupérer le code
+        uses: actions/checkout@v4
       
-      # Étape 2 : Déployer via FTP
-      - name: 🚀 Déployer sur le serveur
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./
-          server-dir: /www/votresite/
-          dry-run: false
+      - name: 🚀 Déployer
+        uses: actions/deploy-pages@v3
