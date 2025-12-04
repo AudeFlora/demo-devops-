@@ -1,4 +1,4 @@
-name: cd Automatique FTP
+name: Cd Automatique FTP
 
 on:
   # Se déclenche quand on push sur main
